@@ -44,7 +44,7 @@ This project is configured as one Render web service. Render builds the Vite sit
 5. In Render's **Environment Variables**, add `DEEPSEEK_API_KEY` with your DeepSeek key. Add `DEEPSEEK_MODEL` with `deepseek-chat` if desired. Never put the real key in GitHub, `.env`, React code, or `VITE_` variables.
 6. Click **Create Web Service**. Render will give you a public `onrender.com` URL that works from any device.
 
-The free Render service may sleep after inactivity, so the first visit or chat request can take a short moment to wake it. Future pushes to the GitHub `main` branch automatically redeploy the site.
+The free Render service may sleep after inactivity, so the first visit or chat request can take a short moment to wake it. Future pushes to the GitHub `main` branch automatically redeploy the site. If chat reports that the DeepSeek account has no available credits, the API is responding with HTTP 402; add provider credits or configure a key from an account with an active balance.
 
 ## Production check before pushing
 

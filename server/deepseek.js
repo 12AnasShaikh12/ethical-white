@@ -28,10 +28,23 @@ app.post('/api/chat', async (req, res) => {
   const context = JSON.stringify({ currentProduct: product, catalog: 'Use the product catalog supplied by the app context only.' })
   try {
     const response = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` },
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+      },
       body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || 'deepseek-chat', temperature: 0.2, max_tokens: 220, messages: [{ role: 'system', content: systemPrompt }, { role: 'system', content: `PRODUCT CONTEXT: ${context}` }, ...history.slice(-8).map(message => ({ role: message.role, content: message.text })), { role: 'user', content: question }] }),
     })
-    if (!response.ok) throw new Error(`DeepSeek returned ${response.status}`)
+    if (!response.ok) {
+      const reason = response.status === 402
+        ? 'provider_credits_unavailable'
+        : `DeepSeek returned ${response.status}`
+      await logUnanswered(question, product, reason)
+      const answer = response.status === 402
+        ? 'The skin guide is temporarily unavailable because the DeepSeek account has no available credits. Add credits to the account or configure another API key, then try again.'
+        : 'I could not reach the skin guide right now. Please try again or contact human support.'
+      return res.status(502).json({ error: 'Assistant unavailable', answer })
+    }
     const data = await response.json()
     return res.json({ answer: data.choices?.[0]?.message?.content || 'I could not find that in my product notes. Contact human support for help.' })
   } catch (error) {

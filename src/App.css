@@ -84,6 +84,9 @@ h2 { margin-bottom: 22px; font-size: clamp(36px, 4vw, 58px); line-height: 1.03; 
 footer { padding: 70px 6vw 25px; background: var(--ink); color: var(--paper); }
 footer .wordmark { color: var(--paper); }
 .footer-brand p { margin-top: 18px; color: #adb9af; font-family: var(--serif); }
+.footer-brand .footer-contact { margin-top: 14px; color: #d4dacf; font-family: 'DM Sans', sans-serif; font-size: 12px; line-height: 1.8; }
+.footer-contact a, .contact-details a { color: inherit; }
+.footer-note { color: #9ba79e; font-size: 11px; line-height: 1.5; }
 .footer-links { display: grid; grid-template-columns: repeat(3, 130px); justify-content: end; gap: 30px; margin-top: -45px; }
 .footer-links div { display: flex; flex-direction: column; gap: 8px; }
 .footer-links strong { color: var(--sage); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
